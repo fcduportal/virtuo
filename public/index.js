@@ -164,10 +164,13 @@ function rentalPrice(rental) {
   var totalRentalPrice = dailyPriceAndDuration[0] + getKmPrice(rental);
   if (dailyPriceAndDuration[1] > 1 && dailyPriceAndDuration[1] < 4) {
     totalRentalPrice -= totalRentalPrice / 10;
-  } else if (dailyPriceAndDuration[1] >=4 && dailyPriceAndDuration[1] < 10) {
+  } else if (dailyPriceAndDuration[1] >= 4 && dailyPriceAndDuration[1] < 10) {
     totalRentalPrice -= totalRentalPrice * 30 / 100;
   } else if (dailyPriceAndDuration[1] >= 10) {
     totalRentalPrice -= totalRentalPrice * 50 / 100;
+  }
+  if (rental.options.deductibleReduction) {
+    totalRentalPrice += 4 * dailyPriceAndDuration[1];
   }
   return [totalRentalPrice, dailyPriceAndDuration[1]];
 };
@@ -230,7 +233,13 @@ function commissionCalculator(rental) {
   var commission = 0.3 * priceAndDuration[0];
   var insurance = 0.5 * commission;
   var treasury = 1 * priceAndDuration[1];
-  var virtuo = priceAndDuration[0]-insurance-treasury;
-  return {'commission':{'insurance':insurance,'treasury':treasury,'virtuo':virtuo}};
+  var virtuo = priceAndDuration[0] - insurance - treasury;
+  return {
+    'commission': {
+      'insurance': insurance,
+      'treasury': treasury,
+      'virtuo': virtuo
+    }
+  };
 }
 showRentalPrice();
