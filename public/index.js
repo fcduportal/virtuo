@@ -158,10 +158,11 @@ const actors = [{
   }]
 }];
 
-//Sum of the kmPrice and the dailyPrice
+//Sum of the kmPrice and the dailyPrice. Returns, total price, daily price and price of deductible
 function rentalPrice(rental) {
   var dailyPriceAndDuration = getDailyPrice(rental);
   var totalRentalPrice = dailyPriceAndDuration[0] + getKmPrice(rental);
+  var deductible = 0;
   if (dailyPriceAndDuration[1] > 1 && dailyPriceAndDuration[1] < 4) {
     totalRentalPrice -= totalRentalPrice / 10;
   } else if (dailyPriceAndDuration[1] >= 4 && dailyPriceAndDuration[1] < 10) {
@@ -170,9 +171,9 @@ function rentalPrice(rental) {
     totalRentalPrice -= totalRentalPrice * 50 / 100;
   }
   if (rental.options.deductibleReduction) {
-    totalRentalPrice += 4 * dailyPriceAndDuration[1];
+    deductible += 4 * dailyPriceAndDuration[1];
   }
-  return [totalRentalPrice, dailyPriceAndDuration[1]];
+  return [totalRentalPrice, dailyPriceAndDuration[1], deductible];
 };
 
 ///We get the km/daily price of a car
@@ -227,13 +228,13 @@ function showRentalPrice() {
   console.log(result);
 }
 
-///This function gets the duration and the price of the location and 
+///This function gets the duration and the price of the location 
 function commissionCalculator(rental) {
   var priceAndDuration = rentalPrice(rental);
   var commission = 0.3 * priceAndDuration[0];
   var insurance = 0.5 * commission;
   var treasury = 1 * priceAndDuration[1];
-  var virtuo = priceAndDuration[0] - insurance - treasury;
+  var virtuo = priceAndDuration[0] - insurance - treasury + priceAndDuration[2];
   return {
     'commission': {
       'insurance': insurance,
