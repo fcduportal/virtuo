@@ -213,7 +213,10 @@ function getKmPrice(rental) {
 function showRentalPrice() {
   var result = [];
   for (let i = 0; i < rentals.length; i++) {
-    let rentalCost = rentalPrice(rentals[i])[0];
+      console.log(rental[1]);}
+    /*let rentalCost = rentalPrice(rentals[i])[0];
+    
+
     let json = {
       'idLocation': rentals[i].id,
       'driver': {
@@ -225,7 +228,7 @@ function showRentalPrice() {
     result.push(json);
     result.push(commissionCalculator(rentals[i]));
   }
-  console.log(result);
+  console.log(result);*/
 }
 
 ///This function gets the duration and the price of the location 
